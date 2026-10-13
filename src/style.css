@@ -1,0 +1,72 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #000;
+  color: #fff;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+.app.scanner-only { position: fixed; inset: 0; width: 100%; height: 100%; padding: 0; margin: 0; }
+.ar-shell { position: fixed; inset: 0; width: 100vw; height: 100dvh; overflow: hidden; background: transparent; }
+#sceneMount { position: fixed; inset: 0; width: 100vw; height: 100dvh; z-index: 1; pointer-events: none; }
+#sceneMount a-scene { position: fixed !important; inset: 0 !important; display: block; width: 100vw !important; height: 100dvh !important; background: transparent !important; z-index: 1; }
+#sceneMount canvas { background: transparent !important; }
+video { position: fixed !important; inset: 0 !important; width: 100vw !important; height: 100dvh !important; object-fit: cover !important; z-index: 0 !important; }
+#sceneMount video { z-index: 0 !important; }
+.scan-hud { position: absolute; inset: 0; pointer-events: none; display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 4; }
+.scan-frame { position: relative; width: min(58vw, 245px); aspect-ratio: 1.15; opacity: .85; transition: opacity .2s; }
+.scan-frame i { position: absolute; width: 26px; height: 26px; border-color: #fff; border-style: solid; filter: drop-shadow(0 1px 4px #000); }
+.scan-frame i:nth-child(1) { top: 0; left: 0; border-width: 3px 0 0 3px; border-radius: 7px 0 0; }
+.scan-frame i:nth-child(2) { top: 0; right: 0; border-width: 3px 3px 0 0; border-radius: 0 7px 0 0; }
+.scan-frame i:nth-child(3) { bottom: 0; left: 0; border-width: 0 0 3px 3px; border-radius: 0 0 0 7px; }
+.scan-frame i:nth-child(4) { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-radius: 0 0 7px; }
+.hud-copy { position: absolute; top: max(24px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; white-space: nowrap; border: 1px solid #ffffff36; border-radius: 99px; padding: 10px 14px; background: #10131899; backdrop-filter: blur(10px); color: #fff; font-size: 12px; }
+.pulse { width: 7px; height: 7px; border-radius: 50%; background: #d7ff64; animation: pulse 1.5s infinite; }
+@keyframes pulse { 50% { opacity: .35; box-shadow: 0 0 0 5px #d7ff6422; } }
+.hidden { display: none !important; }
+.ar-shell.target-found .scan-frame, .ar-shell.target-found .hud-copy { opacity: 0; }
+
+
+/* Compact controls appear only while a target is tracked. */
+.model-controls {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #ffffff40;
+  border-radius: 16px;
+  background: #101318cc;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 28px #0005;
+}
+.model-controls.hidden { display: none !important; }
+.model-controls button {
+  min-width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 11px;
+  background: #ffffff16;
+  color: #fff;
+  font: inherit;
+  font-size: 23px;
+  font-weight: 600;
+  touch-action: manipulation;
+}
+.model-controls button:active { background: #d7ff64; color: #101318; }
+.model-controls button[data-action="reset"] {
+  min-width: 52px;
+  padding: 0 9px;
+  font-size: 12px;
+}
+.control-divider {
+  width: 1px;
+  height: 25px;
+  background: #ffffff35;
+}
+.model-controls button[hidden] { display: none !important; }
+.model-controls button.is-playing { background: #d7ff6430; }

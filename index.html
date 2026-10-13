@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101318" />
+  <title>Image to Model AR</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+<body>
+  <main class="app scanner-only">
+    <section class="ar-shell" id="arShell" aria-label="Augmented reality camera">
+      <div id="sceneMount"></div>
+      <div class="scan-hud" id="scanHud">
+        <div class="scan-frame"><i></i><i></i><i></i><i></i></div>
+        <div class="hud-copy"><span class="pulse"></span><span id="hudMessage">Scan target image</span></div>
+      </div>
+
+      <div class="model-controls hidden" id="modelControls" aria-label="Model controls">
+        <button type="button" data-action="rotate-left" aria-label="Rotate left">↶</button>
+        <button type="button" data-action="rotate-right" aria-label="Rotate right">↷</button>
+        <span class="control-divider"></span>
+        <button type="button" data-action="zoom-out" aria-label="Zoom out">−</button>
+        <button type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
+        <button type="button" data-action="reset">Reset</button>
+        <button type="button" data-action="animation" hidden>Play</button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

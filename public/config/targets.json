@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-10-13T11:06:35.386Z",
+  "note": "targetIndex order is alphabetical by target filename. Compile target images in exactly this order.",
+  "tracking": {
+    "filterMinCF": 0.001,
+    "filterBeta": 10
+  },
+  "targets": [
+    {
+      "name": "targets",
+      "imageFile": "targets.png",
+      "modelFile": "targets.glb",
+      "modelUrl": "./3d/targets.glb",
+      "targetIndex": 0,
+      "position": "0 0 0",
+      "rotation": "0 0 0",
+      "scale": "0.2 0.2 0.2",
+      "surface": "floor"
+    }
+  ]
+}
