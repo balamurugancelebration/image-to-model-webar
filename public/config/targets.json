@@ -2,8 +2,8 @@
   "generatedAt": "2026-10-14T09:54:55.233Z",
   "note": "targetIndex order is alphabetical by target filename. Compile target images in exactly this order.",
   "tracking": {
-    "filterMinCF": 0.0001,
-    "filterBeta": 1
+    "filterMinCF": 0.001,
+    "filterBeta": 10
   },
   "targets": [
     {
