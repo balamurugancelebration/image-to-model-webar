@@ -18,6 +18,28 @@
         <div class="hud-copy"><span class="pulse"></span><span id="hudMessage">Scan target image</span></div>
       </div>
 
+      <!-- Animation Prompt Popup -->
+      <div class="anim-popup hidden" id="animPopup" role="dialog" aria-modal="true" aria-labelledby="animPopupTitle">
+        <div class="anim-popup-card">
+          <button type="button" class="anim-popup-close" id="animPopupClose" aria-label="Close popup">&times;</button>
+          <div class="anim-popup-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <polygon points="6 4 20 12 6 20 6 4" fill="currentColor"></polygon>
+            </svg>
+          </div>
+          <div class="anim-popup-content">
+            <h3 class="anim-popup-title" id="animPopupTitle">Play 3D Animation</h3>
+            <p class="anim-popup-desc" id="animPopupDesc">This 3D model contains animation. Would you like to play it?</p>
+          </div>
+          <div class="anim-popup-actions">
+            <button type="button" class="btn-play-anim" id="btnPlayAnim">
+              <span class="btn-icon">▶</span>
+              <span>Play Animation</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="model-controls hidden" id="modelControls" aria-label="Model controls">
         <button type="button" data-action="rotate-left" aria-label="Rotate left">↶</button>
         <button type="button" data-action="rotate-right" aria-label="Rotate right">↷</button>
@@ -25,7 +47,7 @@
         <button type="button" data-action="zoom-out" aria-label="Zoom out">−</button>
         <button type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
         <button type="button" data-action="reset">Reset</button>
-        <button type="button" data-action="animation" hidden>Play</button>
+        <button type="button" data-action="animation" hidden>▶ Play</button>
       </div>
     </section>
   </main>

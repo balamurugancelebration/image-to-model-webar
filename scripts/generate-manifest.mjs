@@ -30,17 +30,19 @@ for (const image of images) {
   }
   const old = previousByName.get(stem.toLowerCase()) || {};
   targets.push({
-    name: stem,
+    name: old.name || stem,
     imageFile: image,
     modelFile: model,
     modelUrl: `./3d/${encodeURIComponent(model).replaceAll('%2F', '/')}`,
-    targetIndex: targets.length,
+    targetIndex: typeof old.targetIndex === 'number' ? old.targetIndex : targets.length,
     position: old.position || '0 0 0',
     rotation: old.rotation || '0 0 0',
     scale: old.scale || '0.2 0.2 0.2',
     surface: old.surface || 'wall'
   });
 }
+
+targets.sort((a, b) => a.targetIndex - b.targetIndex);
 
 fs.mkdirSync(path.dirname(outputFile), { recursive: true });
 fs.writeFileSync(outputFile, JSON.stringify({

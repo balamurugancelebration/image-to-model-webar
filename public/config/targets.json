@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T06:32:37.495Z",
+  "generatedAt": "2026-10-14T09:54:55.233Z",
   "note": "targetIndex order is alphabetical by target filename. Compile target images in exactly this order.",
   "tracking": {
     "filterMinCF": 0.001,
@@ -7,22 +7,22 @@
   },
   "targets": [
     {
-      "name": "QR-Code",
-      "imageFile": "QR-Code.jpeg",
-      "modelFile": "QR-Code.glb",
-      "modelUrl": "./3d/QR-Code.glb",
-      "targetIndex": 1,
+      "name": "targets",
+      "imageFile": "targets.jpeg",
+      "modelFile": "targets.glb",
+      "modelUrl": "./3d/targets.glb",
+      "targetIndex": 0,
       "position": "0 0 0",
       "rotation": "0 0 0",
       "scale": "0.5 0.5 0.5",
       "surface": "floor"
     },
     {
-      "name": "targets",
-      "imageFile": "targets.jpg",
-      "modelFile": "targets.glb",
-      "modelUrl": "./3d/targets.glb",
-      "targetIndex": 0,
+      "name": "QR-Code",
+      "imageFile": "QR-Code.jpeg",
+      "modelFile": "QR-Code.glb",
+      "modelUrl": "./3d/QR-Code.glb",
+      "targetIndex": 1,
       "position": "0 0 0",
       "rotation": "0 0 0",
       "scale": "0.5 0.5 0.5",

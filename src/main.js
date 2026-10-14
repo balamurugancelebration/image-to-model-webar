@@ -3,11 +3,32 @@ const $ = (id) => document.getElementById(id);
 const sceneMount = $("sceneMount");
 const hudMessage = $("hudMessage");
 const modelControls = $("modelControls");
+const animPopup = $("animPopup");
+const animPopupTitle = $("animPopupTitle");
+const animPopupDesc = $("animPopupDesc");
+const animPopupClose = $("animPopupClose");
+const btnPlayAnim = $("btnPlayAnim");
 
 let activeScene = null;
 let started = false;
 let activeModelControl = null;
 const animationMixers = [];
+
+function showAnimationPopup(targetName) {
+  if (!animPopup) return;
+  if (animPopupTitle) {
+    animPopupTitle.textContent = targetName ? `${targetName} Animation` : "Play 3D Animation";
+  }
+  if (animPopupDesc) {
+    animPopupDesc.textContent = "This 3D model contains animation. Tap below to start playing.";
+  }
+  animPopup.classList.remove("hidden");
+}
+
+function hideAnimationPopup() {
+  if (!animPopup) return;
+  animPopup.classList.add("hidden");
+}
 
 // Register A-Frame component to update animation mixers on every render frame
 if (typeof window !== "undefined" && window.AFRAME && !window.AFRAME.components["model-animator"]) {
@@ -151,7 +172,8 @@ function makeScene(manifest) {
 
     let mixer = null;
     let clips = [];
-    let isPlaying = true;
+    let isPlaying = false;
+    let hasPrompted = false;
     model.addEventListener("model-loaded", (evt) => {
       const object = model.getObject3D("mesh");
       if (!object) return;
@@ -210,6 +232,10 @@ function makeScene(manifest) {
       }
       if (activeModelControl?.root === modelRoot) {
         activeModelControl.mixer = mixer;
+        refreshAnimationButton();
+        if (clips.length && !isPlaying && !hasPrompted) {
+          showAnimationPopup(target.name);
+        }
       }
       refreshAnimationButton();
     });
@@ -224,7 +250,7 @@ function makeScene(manifest) {
       const button = modelControls?.querySelector('[data-action="animation"]');
       if (!button || activeModelControl?.root !== modelRoot) return;
       button.hidden = !clips.length;
-      button.textContent = isPlaying ? "Pause" : "Play";
+      button.textContent = isPlaying ? "⏸ Pause" : "▶ Play";
       button.setAttribute("aria-label", isPlaying ? "Pause animation" : "Play animation");
       button.classList.toggle("is-playing", isPlaying);
     }
@@ -232,19 +258,36 @@ function makeScene(manifest) {
     anchor.addEventListener("targetFound", () => {
       model.setAttribute("visible", "true");
       if (mixer) mixer.timeScale = isPlaying ? 1 : 0;
-      activeModelControl = { root: modelRoot, original, mixer, get clips() { return clips; }, get isPlaying() { return isPlaying; }, setPlaying(value) {
-        isPlaying = value;
-        if (mixer) mixer.timeScale = value ? 1 : 0;
-        refreshAnimationButton();
-      } };
+      activeModelControl = {
+        root: modelRoot,
+        original,
+        mixer,
+        get clips() { return clips; },
+        get isPlaying() { return isPlaying; },
+        get hasPrompted() { return hasPrompted; },
+        set hasPrompted(value) { hasPrompted = value; },
+        setPlaying(value) {
+          isPlaying = value;
+          if (mixer) mixer.timeScale = value ? 1 : 0;
+          refreshAnimationButton();
+          if (value) {
+            hideAnimationPopup();
+          }
+        }
+      };
       modelControls?.classList.remove("hidden");
       refreshAnimationButton();
       $("arShell")?.classList.add("target-found");
       showMessage(`${target.name} found`);
+
+      if (clips.length && !isPlaying && !hasPrompted) {
+        showAnimationPopup(target.name);
+      }
     });
 
     anchor.addEventListener("targetLost", () => {
       model.setAttribute("visible", "false");
+      hideAnimationPopup();
       if (activeModelControl?.root === modelRoot) {
         activeModelControl = null;
         modelControls?.classList.add("hidden");
@@ -287,8 +330,10 @@ function adjustModel(action) {
       showMessage("This model has no embedded animation");
       return;
     }
-    activeModelControl.setPlaying(!activeModelControl.isPlaying);
-    showMessage(activeModelControl.isPlaying ? "Animation playing" : "Animation paused");
+    const nextState = !activeModelControl.isPlaying;
+    activeModelControl.hasPrompted = true;
+    activeModelControl.setPlaying(nextState);
+    showMessage(nextState ? "Animation playing" : "Animation paused");
     return;
   }
   const rotation = root.getAttribute("rotation");
@@ -332,6 +377,31 @@ function adjustModel(action) {
 modelControls?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-action]");
   if (button) adjustModel(button.dataset.action);
+});
+
+btnPlayAnim?.addEventListener("click", () => {
+  if (activeModelControl) {
+    activeModelControl.hasPrompted = true;
+    activeModelControl.setPlaying(true);
+    showMessage("Animation playing");
+  }
+  hideAnimationPopup();
+});
+
+animPopupClose?.addEventListener("click", () => {
+  if (activeModelControl) {
+    activeModelControl.hasPrompted = true;
+  }
+  hideAnimationPopup();
+});
+
+animPopup?.addEventListener("click", (event) => {
+  if (event.target === animPopup) {
+    if (activeModelControl) {
+      activeModelControl.hasPrompted = true;
+    }
+    hideAnimationPopup();
+  }
 });
 
 async function startAR() {
